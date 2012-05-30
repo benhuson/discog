@@ -27,6 +27,7 @@ class Discography {
 	
 	var $admin;
 	var $db_schema;
+	var $shortcodes;
 	
 	/**
 	 * Constructor
@@ -47,9 +48,13 @@ class Discography {
 		add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
 		add_filter( 'http_request_args', array( $this, 'prevent_plugin_auto_update' ), 5, 2 );
 		
+		// Shortcodes
+		require_once( DISCOGRAPHY_DIR . 'includes/shortcodes.php' );
+		$this->shortcodes = new Discography_Shortcodes();
+		
 		// Admin
 		if ( is_admin() ) {
-			include_once( DISCOGRAPHY_DIR . 'admin/admin.php' );
+			require_once( DISCOGRAPHY_DIR . 'admin/admin.php' );
 			$this->admin = new Discography_Admin();
 		}
 	}
