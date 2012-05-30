@@ -45,6 +45,7 @@ class Discography {
 		add_filter( 'the_content', array( $this, 'album_content' ) );
 		add_filter( 'the_content', array( $this, 'song_content' ) );
 		add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
+		add_filter( 'http_request_args', array( $this, 'prevent_plugin_auto_update' ), 5, 2 );
 		
 		// Admin
 		if ( is_admin() ) {
@@ -1097,6 +1098,19 @@ class Discography {
 	function register_activation_hook() {
 		include_once( DISCOGRAPHY_DIR . 'includes/db-schema.php' );
 		$this->db_schema = new Discography_DB_Schema();
+	}
+	
+	/**
+	 * Prevent Plugin Auto Update
+	 */
+	function prevent_plugin_auto_update( $r, $url ) {
+		if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) )
+			return $r; // Not a plugin update request. Bail immediately.
+		$plugins = unserialize( $r['body']['plugins'] );
+		unset( $plugins->plugins[ plugin_basename( __FILE__ ) ] );
+		unset( $plugins->active[ array_search( plugin_basename( __FILE__ ), $plugins->active ) ] );
+		$r['body']['plugins'] = serialize( $plugins );
+		return $r;
 	}
 	
 }
