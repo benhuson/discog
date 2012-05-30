@@ -1,0 +1,53 @@
+
+table.group {
+	border-collapse: collapse;
+	width: 100%; 
+	border: 1px solid black;
+}
+
+table.group thead {
+	font-size: 8pt;
+	border-bottom: 1px solid black;
+}
+
+table.group thead td {
+	font-size: 8pt;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+	text-align: center;
+	padding: 0px 2px;
+}						
+
+table.group thead td.song-title {
+	text-align: left;
+}
+
+table.group tbody tr {
+	border-bottom: 1px dotted #AAA;
+}
+
+table.group td.icon {
+	width: 18px;
+	text-align: center;
+}
+
+table.group td.buy-intro {
+	font-size: 8pt;
+	text-align: right;
+	font-style: italic;
+}
+
+h3.group-title{
+	margin-top: 1em;
+}
+
+div.albumArt {
+	float: right;
+	padding: 0px 0px 7px 7px;
+}
+
+div.hear { line-height: 20px; }
+
+div.hear object { position: relative; top: 3px;}
+
+div#song-actions, div#song-info { padding-left: 1em; margin-bottom: 1em; }
