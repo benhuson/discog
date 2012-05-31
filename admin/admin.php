@@ -24,14 +24,27 @@ class Discography_Admin {
 		$plugin_file = 'posts-to-posts/posts-to-posts.php';
 		if ( $Discography->p2p_is_installed() ) {
 			if ( ! $Discography->p2p_is_active() ) {
-				echo '<div id="message" class="updated" style="margin:15px 0;"><p>In order to associate songs with albums, please <a href="' . wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $plugin_file . '&amp;plugin_status=all&amp;paged=1&amp;s=posts-to-posts', 'activate-plugin_' . $plugin_file ) . '">activate the Posts 2 Posts plugin</a>.</p></div>';
+				return 'In order to associate songs with albums, please <a href="' . wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $plugin_file . '&amp;plugin_status=all&amp;paged=1&amp;s=posts-to-posts', 'activate-plugin_' . $plugin_file ) . '">activate the Posts 2 Posts plugin</a>.';
 			}
 		} else {
 			$install_msg = 'install the Posts 2 Posts plugin';
 			if ( current_user_can( 'install_plugins' ) ) {
 				$install_msg = '<a href="' . wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=posts-to-posts' ), 'install-plugin_posts-to-posts' ) . '">' . $install_msg . '</a>';
 			}
-			echo '<div id="message" class="updated" style="margin:15px 0;"><p>In order to associate songs with albums, please ' . $install_msg . '.</p></div>';
+			return 'In order to associate songs with albums, please ' . $install_msg . '.';
+		}
+		return '';
+	}
+	
+	/**
+	 * P2P Install Admin Message
+	 * Displays a message on the settings page if the user
+	 * needs to install or activate the Posts 2 posts plugin.
+	 */
+	function p2p_install_admin_message() {
+		$msg = $this->p2p_install_message();
+		if ( ! empty( $msg ) ) {
+			echo '<div id="message" class="updated" style="margin:15px 0;"><p>' . $msg . '</p></div>';
 		}
 	}
 	
@@ -104,7 +117,7 @@ class Discography_Admin {
 		echo '<div class="wrap">';
 		echo '<div id="icon-themes" class="icon32" style="background-image:url(' . DISCOGRAPHY_URL . 'images/icons/icon32.png);"><br /></div>';
 		echo '<h2>Discography Settings</h2>';
-		$this->p2p_install_message();
+		$this->p2p_install_admin_message();
 		echo '<form action="options.php" method="post">';
 		settings_fields( 'discography_options' );
 		do_settings_sections( 'discography' );

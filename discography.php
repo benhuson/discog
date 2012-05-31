@@ -725,7 +725,19 @@ class Discography {
 			add_meta_box( 'discography_song', 'Song Details', array( $this, 'song_details_meta_box_inner' ), 'discography-song', 'normal', 'core' );
 			add_meta_box( 'discography_song_purchase', 'Purchase Details', array( $this, 'song_purchase_meta_box_inner' ), 'discography-song', 'normal', 'core' );
 			add_meta_box( 'discography_song_lyrics', 'Lyrics', array( $this, 'song_lyrics_meta_box_inner' ), 'discography-song', 'normal', 'core' );
+			if ( ! $this->p2p_is_installed() || ! $this->p2p_is_active() ) {
+				add_meta_box( 'discography_install_p2p', 'Songs', array( $this, 'install_p2p_meta_box_inner' ), 'discography-album', 'side' );
+				add_meta_box( 'discography_install_p2p', 'Albums', array( $this, 'install_p2p_meta_box_inner' ), 'discography-song', 'side' );
+			}
 		}
+	}
+	
+	/**
+	 * Install Posts 2 Posts Meta Box
+	 */
+	function install_p2p_meta_box_inner() {
+		global $post;
+		echo '<p>' . $this->admin->p2p_install_message() . '</p>';
 	}
 	
 	/**
