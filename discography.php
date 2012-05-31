@@ -929,7 +929,9 @@ class Discography {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
 			return;
 		
-		// Save Data
+		if ( ! isset( $_POST['post_type'] ) )
+			return;
+		
 		if ( 'discography-album' == $_POST['post_type'] && current_user_can( 'edit_page', $post_id ) ) {
 			// Save Album Details
 			if ( wp_verify_nonce( $_POST['album_details_noncename'], plugin_basename( __FILE__ ) ) ) {
