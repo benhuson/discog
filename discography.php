@@ -551,19 +551,19 @@ class Discography {
 		
 		// Songs
 		$labels = array(
-			'name'               => _x( 'Songs', 'general name' ),
-			'singular_name'      => _x( 'Song', 'singular name' ),
-			'add_new'            => _x( 'Add New', 'song' ),
-			'add_new_item'       => __( 'Add New Song' ),
-			'edit_item'          => __( 'Edit Song' ),
-			'new_item'           => __( 'New Song' ),
-			'all_items'          => __( 'All Songs' ),
-			'view_item'          => __( 'View Song' ),
-			'search_items'       => __( 'Search Songs' ),
-			'not_found'          => __( 'No songs found' ),
-			'not_found_in_trash' => __( 'No songs found in Trash' ),
+			'name'               => _x( 'Songs', 'general name', 'discography' ),
+			'singular_name'      => _x( 'Song', 'singular name', 'discography' ),
+			'add_new'            => _x( 'Add New', 'song', 'discography' ),
+			'add_new_item'       => __( 'Add New Song', 'discography' ),
+			'edit_item'          => __( 'Edit Song', 'discography' ),
+			'new_item'           => __( 'New Song', 'discography' ),
+			'all_items'          => __( 'All Songs', 'discography' ),
+			'view_item'          => __( 'View Song', 'discography' ),
+			'search_items'       => __( 'Search Songs', 'discography' ),
+			'not_found'          => __( 'No songs found', 'discography' ),
+			'not_found_in_trash' => __( 'No songs found in Trash', 'discography' ),
 			'parent_item_colon'  => '',
-			'menu_name'          => 'Songs'
+			'menu_name'          => __( 'Songs', 'discography' )
 		);
 		$args = array(
 			'labels'             => $labels,
@@ -597,8 +597,8 @@ class Discography {
 				'to'       => 'discography-album',
 				'sortable' => 'any',
 				'title'    => array(
-					'from' => 'Albums',
-					'to'   => 'Songs'
+					'from' => __( 'Albums', 'discography' ),
+					'to'   => __( 'Songs', 'discography' )
 				)
 			) );
 		}
@@ -630,23 +630,23 @@ class Discography {
 		$options = $this->get_discography_category_options();
 		?>
 		<div class="form-field">
-			<label for="discography_category_group_order"><?php _e( 'Order' ); ?></label>
+			<label for="discography_category_group_order"><?php _e( 'Order', 'discography' ); ?></label>
 			<input name="discography_category[group_order]" type="text" size="4" id="discography_category_group_order" value="0" style="width:auto;" />
 		</div>
 		<div class="form-field">
-			<label for="discography_category_group_sort_by"><?php _e( 'Sort albums in this category by' ); ?></label>
+			<label for="discography_category_group_sort_by"><?php _e( 'Sort albums in this category by', 'discography' ); ?></label>
 			<select name="discography_category[group_sort_by]" id="discography_category_group_sort_by">
-				<option value="title">Alphabetical</option>
-				<option value="release_date">Release Date</option>
-				<option value="id">ID</option>
-				<option value="order">Custom</option>
+				<option value="title"><?php _e( 'Alphabetical', 'discography' ); ?></option>
+				<option value="release_date"><?php _e( 'Release Date', 'discography' ); ?></option>
+				<option value="id"><?php _e( 'ID', 'discography' ); ?></option>
+				<option value="order"><?php _e( 'Custom', 'discography' ); ?></option>
 			</select>
 		</div>
 		<div class="form-field">
-			<label for="discography_category_group_sort"><?php _e( 'Ordering Direction' ); ?></label>
+			<label for="discography_category_group_sort"><?php _e( 'Ordering Direction', 'discography' ); ?></label>
 			<select name="discography_category[group_sort]" id="discography_category_group_sort">
-				<option value="ASC">Ascending</option>
-				<option value="DESC">Descending</option>
+				<option value="ASC"><?php _e( 'Ascending', 'discography' ); ?></option>
+				<option value="DESC"><?php _e( 'Descending', 'discography' ); ?></option>
 			</select>
 		</div>
 		<?php
@@ -663,7 +663,7 @@ class Discography {
 		?>
 		<tr class="form-field">
 			<th scope="row" valign="top">
-				<label for="discography_category_group_order"><?php _e( 'Order' ); ?></label>
+				<label for="discography_category_group_order"><?php _e( 'Order', 'discography' ); ?></label>
 			</th>
 			<td>
 				<input name="discography_category[group_order]" type="text" size="4" id="discography_category_group_order" value="<?php echo $options['group_order']; ?>" style="width:auto;" />
@@ -671,25 +671,25 @@ class Discography {
 		</tr>
 		<tr class="form-field">
 			<th scope="row" valign="top">
-				<label for="discography_category_group_sort_by"><?php _e( 'Sort albums in this category by' ); ?></label>
+				<label for="discography_category_group_sort_by"><?php _e( 'Sort albums in this category by', 'discography' ); ?></label>
 			</th>
 			<td>
 				<select name="discography_category[group_sort_by]" id="discography_category_group_sort_by">
-					<option value="title" <?php selected( 'title', $options['group_sort_by'] ); ?>>Alphabetical</option>
-					<option value="release_date" <?php selected( 'release_date', $options['group_sort_by'] ); ?>>Release Date</option>
-					<option value="id" <?php selected( 'id', $options['group_sort_by'] ); ?>>ID</option>
-					<option value="order" <?php selected( 'order', $options['group_sort_by'] ); ?>>Custom</option>
+					<option value="title" <?php selected( 'title', $options['group_sort_by'] ); ?>><?php _e( 'Alphabetical', 'discography' ); ?></option>
+					<option value="release_date" <?php selected( 'release_date', $options['group_sort_by'] ); ?>><?php _e( 'Release Date', 'discography' ); ?></option>
+					<option value="id" <?php selected( 'id', $options['group_sort_by'] ); ?>><?php _e( 'ID', 'discography' ); ?></option>
+					<option value="order" <?php selected( 'order', $options['group_sort_by'] ); ?>><?php _e( 'Custom', 'discography' ); ?></option>
 				</select>
 			</td>
 		</tr>
 		<tr class="form-field">
 			<th scope="row" valign="top">
-				<label for="discography_category_group_sort"><?php _e( 'Ordering Direction' ); ?></label>
+				<label for="discography_category_group_sort"><?php _e( 'Ordering Direction', 'discography' ); ?></label>
 			</th>
 			<td>
 				<select name="discography_category[group_sort]" id="discography_category_group_sort">
-					<option value="ASC" <?php selected( 'ASC', $options['group_sort'] ); ?>>Ascending</option>
-					<option value="DESC" <?php selected( 'DESC', $options['group_sort'] ); ?>>Descending</option>
+					<option value="ASC" <?php selected( 'ASC', $options['group_sort'] ); ?>><?php _e( 'Ascending', 'discography' ); ?></option>
+					<option value="DESC" <?php selected( 'DESC', $options['group_sort'] ); ?>><?php _e( 'Descending', 'discography' ); ?></option>
 				</select>
 			</td>
 		</tr>
@@ -724,14 +724,14 @@ class Discography {
 	 */
 	function add_meta_boxes() {
 		if ( function_exists( 'add_meta_box' ) ) {
-			add_meta_box( 'discography_album', 'Album Details', array( $this, 'album_details_meta_box_inner' ), 'discography-album', 'normal', 'core' );
-			add_meta_box( 'discography_album_purchase', 'Purchase Details', array( $this, 'album_purchase_meta_box_inner' ), 'discography-album', 'normal', 'core' );
-			add_meta_box( 'discography_song', 'Song Details', array( $this, 'song_details_meta_box_inner' ), 'discography-song', 'normal', 'core' );
-			add_meta_box( 'discography_song_purchase', 'Purchase Details', array( $this, 'song_purchase_meta_box_inner' ), 'discography-song', 'normal', 'core' );
-			add_meta_box( 'discography_song_lyrics', 'Lyrics', array( $this, 'song_lyrics_meta_box_inner' ), 'discography-song', 'normal', 'core' );
+			add_meta_box( 'discography_album', __( 'Album Details', 'discography' ), array( $this, 'album_details_meta_box_inner' ), 'discography-album', 'normal', 'core' );
+			add_meta_box( 'discography_album_purchase', __( 'Purchase Details', 'discography' ), array( $this, 'album_purchase_meta_box_inner' ), 'discography-album', 'normal', 'core' );
+			add_meta_box( 'discography_song', __( 'Song Details', 'discography' ), array( $this, 'song_details_meta_box_inner' ), 'discography-song', 'normal', 'core' );
+			add_meta_box( 'discography_song_purchase', __( 'Purchase Details', 'discography' ), array( $this, 'song_purchase_meta_box_inner' ), 'discography-song', 'normal', 'core' );
+			add_meta_box( 'discography_song_lyrics', __( 'Lyrics', 'discography' ), array( $this, 'song_lyrics_meta_box_inner' ), 'discography-song', 'normal', 'core' );
 			if ( ! $this->p2p_is_installed() || ! $this->p2p_is_active() ) {
-				add_meta_box( 'discography_install_p2p', 'Songs', array( $this, 'install_p2p_meta_box_inner' ), 'discography-album', 'side' );
-				add_meta_box( 'discography_install_p2p', 'Albums', array( $this, 'install_p2p_meta_box_inner' ), 'discography-song', 'side' );
+				add_meta_box( 'discography_install_p2p', __( 'Songs', 'discography' ), array( $this, 'install_p2p_meta_box_inner' ), 'discography-album', 'side' );
+				add_meta_box( 'discography_install_p2p', __( 'Albums', 'discography' ), array( $this, 'install_p2p_meta_box_inner' ), 'discography-song', 'side' );
 			}
 		}
 	}
@@ -757,25 +757,25 @@ class Discography {
 		// The actual fields for data entry
 		echo '<table class="form-table" style="width: 100%;" cellspacing="2" cellpadding="5"><tbody>';
 		echo '<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_details_artist">Album Artist</label></th>
+				<th valign="top" scope="row"><label for="discography_album_details_artist">' . __( 'Album Artist', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_album_details[artist]" id="discography_album_details_artist" size="50" value="' . $details['artist'] . '" style="width: 95%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_details_is_album">Is this an album?</label></th>
+				<th valign="top" scope="row"><label for="discography_album_details_is_album">' . __( 'Is this an album?', 'discography' ) . '</label></th>
 				<td><select name="discography_album_details[is_album]" id="discography_album_details_is_album">
-					<option value="1" ' . selected( $details['is_album'], '1', false ) . '>Yes</option>
-					<option value="0" ' . selected( $details['is_album'], '0', false ) . '>No</option>
+					<option value="1" ' . selected( $details['is_album'], '1', false ) . '>' . __( 'Yes', 'discography' ) . '</option>
+					<option value="0" ' . selected( $details['is_album'], '0', false ) . '>' . __( 'No', 'discography' ) . '</option>
 				</select></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_details_show_on_pages">Show this on song pages?</label></th>
+				<th valign="top" scope="row"><label for="discography_album_details_show_on_pages">' . __( 'Show this on song pages?', 'discography' ) . '</label></th>
 				<td><select name="discography_album_details[show_on_pages]" id="discography_album_details_show_on_pages">
-					<option value="1" ' . selected( $details['show_on_pages'], '1', false ) . '>Yes</option>
-					<option value="0" ' . selected( $details['show_on_pages'], '0', false ) . '>No</option>
+					<option value="1" ' . selected( $details['show_on_pages'], '1', false ) . '>' . __( 'Yes', 'discography' ) . '</option>
+					<option value="0" ' . selected( $details['show_on_pages'], '0', false ) . '>' . __( 'No', 'discography' ) . '</option>
 				</select></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_details_release_date">Release Date</label></th>
+				<th valign="top" scope="row"><label for="discography_album_details_release_date">' . __( 'Release Date', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_album_details[release_date]" id="discography_album_details_release_date" size="10" value="' . $details['release_date'] . '" style="width: 25%"></td>
 			</tr>';
 		echo '</tbody></table>';
@@ -794,23 +794,23 @@ class Discography {
 		// The actual fields for data entry
 		echo '<table class="form-table" style="width: 100%;" cellspacing="2" cellpadding="5"><tbody>';
 		echo '<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_purchase_price">Physical Copy Price</label></th>
+				<th valign="top" scope="row"><label for="discography_album_purchase_price">' . __( 'Physical Copy Price', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_album_purchase[price]" id="discography_album_purchase_price" size="10" value="' . $details['price'] . '" style="width: 25%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_purchase_purchase_link">Purchase (physical copy) Link</label></th>
+				<th valign="top" scope="row"><label for="discography_album_purchase_purchase_link">' . __( 'Purchase (physical copy) Link', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_album_purchase[purchase_link]" id="discography_album_purchase_purchase_link" size="50" value="' . $details['purchase_link'] . '" style="width: 95%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_purchase_download_price">Download Price</label></th>
+				<th valign="top" scope="row"><label for="discography_album_purchase_download_price">' . __( 'Download Price', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_album_purchase[download_price]" id="discography_album_purchase_download_price" size="10" value="' . $details['download_price'] . '" style="width: 25%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_purchase_purchase_download_link">Purchase (physical copy) Link</label></th>
+				<th valign="top" scope="row"><label for="discography_album_purchase_purchase_download_link">' . __( 'Purchase (physical copy) Link', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_album_purchase[purchase_download_link]" id="discography_album_purchase_purchase_download_link" size="50" value="' . $details['purchase_download_link'] . '" style="width: 95%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_purchase_free_download_link">Free Download Link</label></th>
+				<th valign="top" scope="row"><label for="discography_album_purchase_free_download_link">' . __( 'Free Download Link', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_album_purchase[free_download_link]" id="discography_album_purchase_free_download_link" size="50" value="' . $details['free_download_link'] . '" style="width: 95%"></td>
 			</tr>';
 		echo '</tbody></table>';
@@ -829,33 +829,33 @@ class Discography {
 		// The actual fields for data entry
 		echo '<table class="form-table" style="width: 100%;" cellspacing="2" cellpadding="5"><tbody>';
 		echo '<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_song_details_recording_artist">Recording Artist</label></th>
+				<th valign="top" scope="row"><label for="discography_song_details_recording_artist">' . __( 'Recording Artist', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_song_details[recording_artist]" id="discography_song_details_recording_artist" size="50" value="' . $details['recording_artist'] . '" style="width: 95%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_song_details_recording_date">Recording Date</label></th>
+				<th valign="top" scope="row"><label for="discography_song_details_recording_date">' . __( 'Recording Date', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_song_details[recording_date]" id="discography_song_details_recording_date" size="10" value="' . $details['recording_date'] . '" style="width: 25%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_song_details_composer">Composer</label></th>
+				<th valign="top" scope="row"><label for="discography_song_details_composer">' . __( 'Composer', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_song_details[composer]" id="discography_song_details_composer" size="50" value="' . $details['composer'] . '" style="width: 95%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_song_details_track_length">Track Length</label></th>
+				<th valign="top" scope="row"><label for="discography_song_details_track_length">' . __( 'Track Length', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_song_details[track_length]" id="discography_song_details_track_length" size="10" value="' . $details['track_length'] . '" style="width: 25%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_song_details_streaming">Allow streaming?</label></th>
+				<th valign="top" scope="row"><label for="discography_song_details_streaming">' . __( 'Allow streaming?', 'discography' ) . '</label></th>
 				<td><select name="discography_song_details[allow_streaming]" id="discography_song_details_streaming">
-					<option value="1" ' . selected( $details['allow_streaming'], '1', false ) . '>Yes</option>
-					<option value="0" ' . selected( $details['allow_streaming'], '0', false ) . '>No</option>
+					<option value="1" ' . selected( $details['allow_streaming'], '1', false ) . '>' . __( 'Yes', 'discography' ) . '</option>
+					<option value="0" ' . selected( $details['allow_streaming'], '0', false ) . '>' . __( 'No', 'discography' ) . '</option>
 				</select></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_song_details_allow_download">Allow download?</label></th>
+				<th valign="top" scope="row"><label for="discography_song_details_allow_download">' . __( 'Allow download?', 'discography' ) . '</label></th>
 				<td><select name="discography_song_details[allow_download]" id="discography_song_details_allow_download">
-					<option value="1" ' . selected( $details['allow_download'], '1', false ) . '>Yes</option>
-					<option value="0" ' . selected( $details['allow_download'], '0', false ) . '>No</option>
+					<option value="1" ' . selected( $details['allow_download'], '1', false ) . '>' . __( 'Yes', 'discography' ) . '</option>
+					<option value="0" ' . selected( $details['allow_download'], '0', false ) . '>' . __( 'No', 'discography' ) . '</option>
 				</select></td>
 			</tr>';
 		echo '</tbody></table>';
@@ -874,15 +874,15 @@ class Discography {
 		// The actual fields for data entry
 		echo '<table class="form-table" style="width: 100%;" cellspacing="2" cellpadding="5"><tbody>';
 		echo '<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_song_purchase_price">Price</label></th>
+				<th valign="top" scope="row"><label for="discography_song_purchase_price">' . __( 'Price', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_song_purchase[price]" id="discography_song_purchase_price" size="10" value="' . $purchase['price'] . '" style="width: 25%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_song_purchase_purchase_download_link">Purchase Download Link</label></th>
+				<th valign="top" scope="row"><label for="discography_song_purchase_purchase_download_link">' . __( 'Purchase Download Link', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_song_purchase[purchase_download_link]" id="discography_song_purchase_purchase_download_link" size="50" value="' . $purchase['purchase_download_link'] . '" style="width: 95%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_song_purchase_free_download_link">Free Download/Streaming Link</label></th>
+				<th valign="top" scope="row"><label for="discography_song_purchase_free_download_link">' . __( 'Free Download/Streaming Link', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_song_purchase[free_download_link]" id="discography_song_purchase_free_download_link" size="50" value="' . $purchase['free_download_link'] . '" style="width: 95%"></td>
 			</tr>';
 		echo '</tbody></table>';
@@ -899,7 +899,7 @@ class Discography {
 		echo '<input type="hidden" name="song_lyrics_noncename" id="song_lyrics_noncename" value="' . wp_create_nonce( plugin_basename( __FILE__ ) ) . '" />';
 		
 		// The actual fields for data entry
-		echo '<label class="screen-reader-text" for="discography_song_lyrics">Lyrics</label>';
+		echo '<label class="screen-reader-text" for="discography_song_lyrics">' . __( 'Lyrics', 'discography' ) . '</label>';
 		echo '<textarea rows="15" cols="40" name="discography_song_lyrics" tabindex="6" id="discography_song_lyrics" style="margin: 0px; width: 98%;">' . $lyrics . '</textarea>';
 	}
 	
