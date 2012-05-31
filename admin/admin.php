@@ -24,14 +24,15 @@ class Discography_Admin {
 		$plugin_file = 'posts-to-posts/posts-to-posts.php';
 		if ( $Discography->p2p_is_installed() ) {
 			if ( ! $Discography->p2p_is_active() ) {
-				return 'In order to associate songs with albums, please <a href="' . wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $plugin_file . '&amp;plugin_status=all&amp;paged=1&amp;s=posts-to-posts', 'activate-plugin_' . $plugin_file ) . '">activate the Posts 2 Posts plugin</a>.';
+				$install_msg = '<a href="' . wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . $plugin_file . '&amp;plugin_status=all&amp;paged=1&amp;s=posts-to-posts', 'activate-plugin_' . $plugin_file ) . '">' . __( 'activate the Posts 2 Posts plugin', 'discography' ) . '</a>';
+				return sprintf( __( 'In order to associate songs with albums, please %s.', 'discography' ), $install_msg );
 			}
 		} else {
-			$install_msg = 'install the Posts 2 Posts plugin';
+			$install_msg = __( 'install the Posts 2 Posts plugin', 'discography' );
 			if ( current_user_can( 'install_plugins' ) ) {
 				$install_msg = '<a href="' . wp_nonce_url( self_admin_url( 'update.php?action=install-plugin&plugin=posts-to-posts' ), 'install-plugin_posts-to-posts' ) . '">' . $install_msg . '</a>';
 			}
-			return 'In order to associate songs with albums, please ' . $install_msg . '.';
+			return sprintf( __( 'In order to associate songs with albums, please %s.', 'discography' ), $install_msg );
 		}
 		return '';
 	}
@@ -116,13 +117,13 @@ class Discography_Admin {
 	function options_page() {
 		echo '<div class="wrap">';
 		echo '<div id="icon-themes" class="icon32" style="background-image:url(' . DISCOGRAPHY_URL . 'images/icons/icon32.png);"><br /></div>';
-		echo '<h2>Discography Settings</h2>';
+		echo '<h2>' . __( 'Discography Settings', 'discography' ) . '</h2>';
 		$this->p2p_install_admin_message();
 		echo '<form action="options.php" method="post">';
 		settings_fields( 'discography_options' );
 		do_settings_sections( 'discography' );
 		echo '<p class="submit">
-				<input type="submit" name="submit" id="submit" class="button-primary" value="' . __( 'Save Changes' ) . '">
+				<input type="submit" name="submit" id="submit" class="button-primary" value="' . __( 'Save Changes', 'discography' ) . '">
 				<input type="reset" name="reset" id="reset" class="button" value="' . __( 'Reset Options', 'discography' ) . '">
 			</p>';
 		echo '</form>';
@@ -195,11 +196,11 @@ class Discography_Admin {
 				break;
 			case 'discography_download':
 				if ( $details['allow_download'] == 1 )
-					echo 'Yes';
+					echo __( 'Yes', 'discography' );
 				break;
 			case 'discography_streaming':
 				if ( $details['allow_streaming'] == 1 )
-					echo 'Yes';
+					echo __( 'Yes', 'discography' );
 				break;
 			case 'discography_album':
 				if ( function_exists( 'p2p_type' ) ) {

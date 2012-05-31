@@ -110,8 +110,8 @@ class Discography_Settings {
 			'name'     => 'discography_options[song_open_comments]',
 			'id'       => 'discography_options_song_open_comments',
 			'selected' => $options['song_open_comments'],
-			'no'       => 'Closed',
-			'yes'      => 'Open',
+			'no'       => __( 'Closed', 'discography' ),
+			'yes'      => __( 'Open', 'discography' ),
 			'no_val'   => 'closed',
 			'yes_val'  => 'open'
 		) );
@@ -127,8 +127,8 @@ class Discography_Settings {
 			'name'     => 'discography_options[song_open_pingbacks]',
 			'id'       => 'discography_options_song_open_pingbacks',
 			'selected' => $options['song_open_pingbacks'],
-			'no'       => 'Closed',
-			'yes'      => 'Open',
+			'no'       => __( 'Closed', 'discography' ),
+			'yes'      => __( 'Open', 'discography' ),
 			'no_val'   => 'closed',
 			'yes_val'  => 'open'
 		) );
@@ -172,10 +172,10 @@ class Discography_Settings {
 		global $Discography;
 		$options = $Discography->get_discography_options();
 		echo '<select id="discography_options_group_sort_by" name="discography_options[group_sort_by]">
-				<option value="release_date" ' . selected( 'release_date', $options['group_sort_by'], false ) . '>Release Date</option>
-				<option value="order" ' . selected( 'order', $options['group_sort_by'], false ) . '>Custom</option>
-				<option value="title" ' . selected( 'title', $options['group_sort_by'], false ) . '>Alphabetical</option>
-				<option value="id" ' . selected( 'id', $options['group_sort_by'], false ) . '>Category ID</option>
+				<option value="release_date" ' . selected( 'release_date', $options['group_sort_by'], false ) . '>' . __( 'Release Date', 'discography' ) . '</option>
+				<option value="order" ' . selected( 'order', $options['group_sort_by'], false ) . '>' . __( 'Custom', 'discography' ) . '</option>
+				<option value="title" ' . selected( 'title', $options['group_sort_by'], false ) . '>' . __( 'Alphabetical', 'discography' ) . '</option>
+				<option value="id" ' . selected( 'id', $options['group_sort_by'], false ) . '>' . __( 'Category ID', 'discography' ) . '</option>
 			</select>';
 	}
 	
@@ -186,8 +186,8 @@ class Discography_Settings {
 		global $Discography;
 		$options = $Discography->get_discography_options();
 		echo '<select id="discography_options_group_sort" name="discography_options[group_sort]">
-				<option value="ASC" ' . selected( 'ASC', $options['group_sort'], false ) . '>Ascending</option>
-				<option value="DESC" ' . selected( 'DESC', $options['group_sort'], false ) . '>Descending</option>
+				<option value="ASC" ' . selected( 'ASC', $options['group_sort'], false ) . '>' . __( 'Ascending', 'discography' ) . '</option>
+				<option value="DESC" ' . selected( 'DESC', $options['group_sort'], false ) . '>' . __( 'Descending', 'discography' ) . '</option>
 			</select>';
 	}
 	
@@ -211,9 +211,9 @@ class Discography_Settings {
 		global $Discography;
 		$options = $Discography->get_discography_options();
 		echo '<select id="discography_options_category_sort_by" name="discography_options[category_sort_by]">
-				<option value="order" ' . selected( 'order', $options['category_sort_by'], false ) . '>Custom</option>
-				<option value="title" ' . selected( 'title', $options['category_sort_by'], false ) . '>Alphabetical</option>
-				<option value="id" ' . selected( 'id', $options['category_sort_by'], false ) . '>Category ID</option>
+				<option value="order" ' . selected( 'order', $options['category_sort_by'], false ) . '>' . __( 'Custom', 'discography' ) . '</option>
+				<option value="title" ' . selected( 'title', $options['category_sort_by'], false ) . '>' . __( 'Alphabetical', 'discography' ) . '</option>
+				<option value="id" ' . selected( 'id', $options['category_sort_by'], false ) . '>' . __( 'Category ID', 'discography' ) . '</option>
 			</select>';
 	}
 	
@@ -224,8 +224,8 @@ class Discography_Settings {
 		global $Discography;
 		$options = $Discography->get_discography_options();
 		echo '<select id="discography_options_category_sort" name="discography_options[category_sort]">
-				<option value="ASC" ' . selected( 'ASC', $options['category_sort'], false ) . '>Ascending</option>
-				<option value="DESC" ' . selected( 'DESC', $options['category_sort'], false ) . '>Descending</option>
+				<option value="ASC" ' . selected( 'ASC', $options['category_sort'], false ) . '>' . __( 'Ascending', 'discography' ) . '</option>
+				<option value="DESC" ' . selected( 'DESC', $options['category_sort'], false ) . '>' . __( 'Descending', 'discography' ) . '</option>
 			</select>';
 	}
 	
@@ -237,8 +237,8 @@ class Discography_Settings {
 			'name'     => 'yesno',
 			'id'       => '',
 			'selected' => '',
-			'no'       => 'No',
-			'yes'      => 'Yes',
+			'no'       => __( 'No', 'discography' ),
+			'yes'      => __( 'Yes', 'discography' ),
 			'no_val'   => 0,
 			'yes_val'  => 1
 		) );
