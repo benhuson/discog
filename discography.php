@@ -250,17 +250,17 @@ class Discography {
 			) );
 			if ( $songs_query->have_posts() ) { 
 				$content .= '<h2>' . __( 'Songs', 'discography' ) . '</h2>';
-				$content .= '<table class="group album songs">
+				$content .= '<table class="discography">
 						<thead>
 							<tr>
-								<td class="song-title">' . __( 'Song', 'discography' ) . '</td>
-								<td class="hear">' . __( 'Hear', 'discography' ) . '</td>
-								<td class="free">' . __( 'Free', 'discography' ) . '</td>
-								<td class="price">' . __( 'Price', 'discography' ) . '</td>
-								<td class="buy">' . __( 'Buy', 'discography' ) . '</td>
+								<th class="song-title">' . __( 'Song', 'discography' ) . '</th>
+								<th class="hear">' . __( 'Hear', 'discography' ) . '</th>
+								<th class="free">' . __( 'Free', 'discography' ) . '</th>
+								<th class="price">' . __( 'Price', 'discography' ) . '</th>
+								<th class="buy">' . __( 'Buy', 'discography' ) . '</th>
 							</tr>
 						</thead>
-						<tbody>';
+						<tbody class="songs">';
 				while ( $songs_query->have_posts() ) { 
 					$songs_query->the_post();
 					$details  = get_post_meta( get_the_ID(), '_discography_song_details', true );
@@ -319,20 +319,20 @@ class Discography {
 		$purchase = $this->get_album_purchase_meta( $post->ID );
 		
 		if ( has_post_thumbnail() ) {
-			$content = '<div class="albumArt">' . get_the_post_thumbnail( $post->ID, 'thumbnail', array( 'alt' => esc_attr( $post->post_title ) ) ) . '</div>' . $content;
+			$content = '<div class="discography-album-art">' . get_the_post_thumbnail( $post->ID, 'thumbnail', array( 'alt' => esc_attr( $post->post_title ) ) ) . '</div>' . $content;
 		}
 		
-		$content .= '<table class="group album songs">
+		$content .= '<table class="discography">
 				<thead>
 					<tr>
-						<td class="song-title">' . __( 'Song', 'discography' ) . '</td>
-						<td class="hear">' . __( 'Hear', 'discography' ) . '</td>
-						<td class="free">' . __( 'Free', 'discography' ) . '</td>
-						<td class="price">' . __( 'Price', 'discography' ) . '</td>
-						<td class="buy">' . __( 'Buy', 'discography' ) . '</td>
+						<th class="song-title">' . __( 'Song', 'discography' ) . '</th>
+						<th class="hear">' . __( 'Hear', 'discography' ) . '</th>
+						<th class="free">' . __( 'Free', 'discography' ) . '</th>
+						<th class="price">' . __( 'Price', 'discography' ) . '</th>
+						<th class="buy">' . __( 'Buy', 'discography' ) . '</th>
 					</tr>
 				</thead>
-				<tbody>';
+				<tbody class="album">';
 		if ( ! empty( $purchase['purchase_link'] ) && ! empty( $purchase['price'] ) && $purchase['price'] != 0 ) {
 			$content .= '<tr class="buy-info">
 						<td colspan="3" class="buy-intro">' . __( 'Buy the CD (physical media)', 'discography' ) . '</td>
@@ -358,6 +358,8 @@ class Discography {
 		if ( function_exists( 'p2p_type' ) ) {
 			$connected = p2p_type( 'discography_album' )->get_connected( $post );
 			if ( $connected->have_posts() ) :
+				$content .= '</tbody>
+					<tbody class="songs">';
 				foreach ( $connected->posts as $connect ) {
 					$details  = get_post_meta( $connect->ID, '_discography_song_details', true );
 					$purchase = get_post_meta( $connect->ID, '_discography_song_purchase', true );
@@ -413,11 +415,11 @@ class Discography {
 		// Headers
 		$headers = array();
 		if ( ! empty( $details['allow_streaming'] ) )
-			$headers[] = '<div class="hear action">' . $this->player( $post ) . ' ' . __( 'Listen to the song', 'discography' ) . '</div>';
+			$headers[] = '<div class="hear action"><span class="icon">' . $this->player( $post ) . '</span> ' . __( 'Listen to the song', 'discography' ) . '</div>';
 		if ( ! empty( $purchase['purchase_download_link'] ) )
-			$headers[] = '<div class="buy action"><a onclick="javascript:urchinTracker(\'/buy/song/' . $post->post_name . '\');" href="' . $purchase['purchase_download_link'] . '"><img alt="" src="' . plugins_url( '/images/cart_add.png', __FILE__ ) . '"> ' . __( 'Buy the song', 'discography' ) . '</a></div>';
+			$headers[] = '<div class="buy action"><a onclick="javascript:urchinTracker(\'/buy/song/' . $post->post_name . '\');" href="' . $purchase['purchase_download_link'] . '"><span class="icon"><img alt="" src="' . plugins_url( '/images/cart_add.png', __FILE__ ) . '"></span> ' . __( 'Buy the song', 'discography' ) . '</a></div>';
 		if ( ! empty( $purchase['free_download_link'] ) )
-			$headers[] = '<div class="download action"><a onclick="javascript:urchinTracker(\'/free/song/' . $post->post_name . '\');" href="' . $purchase['free_download_link'] . '"><img alt="" src="' . plugins_url( '/images/emoticon_smile.png', __FILE__ ) . '"> ' . __( 'Download the mp3', 'discography' ) . '</a></div>';
+			$headers[] = '<div class="download action"><a onclick="javascript:urchinTracker(\'/free/song/' . $post->post_name . '\');" href="' . $purchase['free_download_link'] . '"><span class="icon"><img alt="" src="' . plugins_url( '/images/emoticon_smile.png', __FILE__ ) . '"></span> ' . __( 'Download the mp3', 'discography' ) . '</a></div>';
 		if ( function_exists( 'p2p_type' ) ) {
 			$connected = p2p_type( 'discography_album' )->get_connected( $post );
 			if ( $connected->have_posts() ) :
@@ -430,29 +432,31 @@ class Discography {
 						$albums[] = '<a href="' . get_permalink( $connect->ID ) . '">' . get_the_title( $connect->ID ) . '</a>';
 					}
 				}
-				$headers[] = '<div class="music action"><img alt="" src="' . plugins_url( '/images/music.png', __FILE__ ) . '"> ' . implode( ', ', $albums ) . '</div>';
+				$headers[] = '<div class="music action"><span class="icon"><img alt="" src="' . plugins_url( '/images/music.png', __FILE__ ) . '"></span> ' . implode( ', ', $albums ) . '</div>';
 			endif;
 		}
-		$header = '<div id="song-actions">' . implode( '', $headers ) . '</div>';
+		$header = '<div class="discography-song-actions">' . implode( '', $headers ) . '</div>';
 		
 		// Song Info
 		$song_infos = array();
 		if ( ! empty( $details['recording_date'] ) )
-			$song_infos[] = '<div class="info recordingDate">' . __( 'Recorded on', 'discography' ) . ' ' . strftime( '%D', strtotime( $details['recording_date'] ) ) . '</div>';
+			$song_infos[] = '<div class="info recording-date">' . __( 'Recorded on', 'discography' ) . ' ' . strftime( '%D', strtotime( $details['recording_date'] ) ) . '</div>';
 		if ( ! empty( $details['recording_artist'] ) )
-			$song_infos[] = '<div class="info recordingArtist">' . __( 'Recorded by', 'discography' ) . ' ' . $details['recording_artist'] . '</div>';
+			$song_infos[] = '<div class="info recording-artist">' . __( 'Recorded by', 'discography' ) . ' ' . $details['recording_artist'] . '</div>';
 		if ( ! empty( $details['composer'] ) )
 			$song_infos[] = '<div class="info composer">' . __( 'Written by', 'discography' ) . ' ' . $details['composer'] . '</div>';
-		$song_info ='<div id="song-info">' . implode( '', $song_infos ) . '</div>';
+		$song_info ='<div class="discography-song-info">' . implode( '', $song_infos ) . '</div>';
 		
 		// Lyrics
 		$footer = '';
 		if ( ! empty( $lyrics ) ) {
-			$footer = '<h3>' . __( 'Lyrics', 'discography' ) . '</h3>
-				<div class="lyrics">' . nl2br( $lyrics ) . '</div>';
+			$footer = '<div class="discography-song-lyrics">
+					<h3>' . __( 'Lyrics', 'discography' ) . '</h3>
+					<div class="discography-lyrics">' . wptexturize( wpautop( $lyrics ) ) . '</div>
+				</div>';
 		}
 		
-		return $header . $song_info . '<div class="description">' . $content . '</div>' . $footer;
+		return $header . $song_info . '<div class="discography-description">' . $content . '</div>' . $footer;
 	}
 	
 	/**
