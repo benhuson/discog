@@ -609,12 +609,17 @@ class Discography {
 	/**
 	 * Get Discography Category Options
 	 */
-	function get_discography_category_options( $term ) {
+	function get_discography_category_options( $term = '' ) {
 		$options = array(
-			'group_order'   => get_metadata( $term->taxonomy, $term->term_id, 'group_order', true ),
-			'group_sort_by' => get_metadata( $term->taxonomy, $term->term_id, 'group_sort_by', true ),
-			'group_sort'    => get_metadata( $term->taxonomy, $term->term_id, 'group_sort', true )
+			'group_order'   => '',
+			'group_sort_by' => '',
+			'group_sort'    => ''
 		);
+		if ( is_object( $term ) && term_exists( $term->slug, 'discography_category' ) ) {
+			$options['group_order']   = get_metadata( $term->taxonomy, $term->term_id, 'group_order', true );
+			$options['group_sort_by'] = get_metadata( $term->taxonomy, $term->term_id, 'group_sort_by', true );
+			$options['group_sort']    = get_metadata( $term->taxonomy, $term->term_id, 'group_sort', true );
+		}
 		$options['group_order'] = absint( $options['group_order'] );
 		if ( empty( $options['group_sort_by'] ) )
 			$options['group_sort_by'] = 'release_date';
