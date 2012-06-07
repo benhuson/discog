@@ -37,16 +37,18 @@ class Discography {
 		add_action( 'init', array( $this, 'register_post_types' ) );
 		add_action( 'wp_loaded', array( $this, 'register_post_relationships' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts_and_styles' ) );
-		add_action( 'discography_category_add_form_fields', array( $this, 'attachment_fields_to_add' ), 10, 2 );
-		add_action( 'discography_category_edit_form_fields', array( $this, 'attachment_fields_to_edit' ), 10, 2 );
-		add_action( 'edited_discography_category', array( $this, 'attachment_fields_to_save' ), 10, 2 );
-		add_action( 'admin_menu', array( $this, 'add_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'save_post' ) );
 		add_filter( 'the_content', array( $this, 'overview_content' ) );
 		add_filter( 'the_content', array( $this, 'album_content' ) );
 		add_filter( 'the_content', array( $this, 'song_content' ) );
 		add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
 		add_filter( 'http_request_args', array( $this, 'prevent_plugin_auto_update' ), 5, 2 );
+		
+		// Admin
+		add_action( 'discography_category_add_form_fields', array( $this, 'attachment_fields_to_add' ), 10, 2 );
+		add_action( 'discography_category_edit_form_fields', array( $this, 'attachment_fields_to_edit' ), 10, 2 );
+		add_action( 'edited_discography_category', array( $this, 'attachment_fields_to_save' ), 10, 2 );
+		add_action( 'admin_menu', array( $this, 'add_meta_boxes' ) );
+		add_action( 'save_post', array( $this, 'save_post' ) );
 		
 		// Shortcodes
 		require_once( DISCOGRAPHY_DIR . 'includes/shortcodes.php' );
