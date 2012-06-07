@@ -11,7 +11,7 @@ class Discography_Admin {
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_discography_scripts' ) );
 		add_action( 'admin_head', array( $this, 'admin_head_post' ) );
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) ); 
+		add_action( 'admin_menu', array( $this, 'add_discography_options_page' ) ); 
 	}
 	
 	/**
@@ -101,10 +101,10 @@ class Discography_Admin {
 	}
 	
 	/**
-	 * Admin Menu
+	 * Add Options Page
 	 * Adds Discography settings page menu item.
 	 */
-	function admin_menu() {
+	function add_discography_options_page() {
 		if ( function_exists( 'add_options_page' ) ) {
 			add_options_page( __( 'Discography', 'discography' ), __( 'Discography', 'discography' ), 'manage_options', DISCOGRAPHY_FILE, array( $this, 'options_page' ) );
 		}
