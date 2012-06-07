@@ -981,7 +981,7 @@ class Discography {
 			// Save Song Lyrics
 			if ( wp_verify_nonce( $_POST['song_lyrics_noncename'], plugin_basename( __FILE__ ) ) ) {
 				if ( isset( $_POST['discography_song_lyrics'] ) ) {
-					update_post_meta( $post_id, '_discography_song_lyrics', wp_kses( $_POST['discography_song_lyrics'], array() ) );
+					update_post_meta( $post_id, '_discography_song_lyrics', wp_kses( $_POST['discography_song_lyrics'], array( 'em' => array(), 'strong' => array(), 'small' => array() ) ) );
 				}
 			}
 		}
