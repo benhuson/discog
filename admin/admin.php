@@ -74,8 +74,12 @@ class Discography_Admin {
 		echo '
 			<script>
 			jQuery(function() {
-				jQuery( "#discography_song_details_recording_date" ).datepicker();
-				jQuery( "#discography_album_details_release_date" ).datepicker();
+				if (jQuery( "#discography_song_details_recording_date" ).length > 0) {
+					jQuery( "#discography_song_details_recording_date" ).datepicker();
+				}
+				if (jQuery( "#discography_album_details_release_date" ).length > 0) {
+					jQuery( "#discography_album_details_release_date" ).datepicker();
+				}
 			});
 			</script>
 			';
