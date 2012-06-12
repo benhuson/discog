@@ -256,10 +256,10 @@ class Discography {
 						<thead>
 							<tr>
 								<th class="song-title">' . __( 'Song', 'discography' ) . '</th>
-								<th class="hear">' . __( 'Hear', 'discography' ) . '</th>
-								<th class="free">' . __( 'Free', 'discography' ) . '</th>
-								<th class="price">' . __( 'Price', 'discography' ) . '</th>
-								<th class="buy">' . __( 'Buy', 'discography' ) . '</th>
+								<th class="hear icon">' . __( 'Hear', 'discography' ) . '</th>
+								<th class="free icon">' . __( 'Free', 'discography' ) . '</th>
+								<th class="price icon">' . __( 'Price', 'discography' ) . '</th>
+								<th class="buy icon">' . __( 'Buy', 'discography' ) . '</th>
 							</tr>
 						</thead>
 						<tbody class="songs">';
@@ -328,10 +328,10 @@ class Discography {
 				<thead>
 					<tr>
 						<th class="song-title">' . __( 'Song', 'discography' ) . '</th>
-						<th class="hear">' . __( 'Hear', 'discography' ) . '</th>
-						<th class="free">' . __( 'Free', 'discography' ) . '</th>
-						<th class="price">' . __( 'Price', 'discography' ) . '</th>
-						<th class="buy">' . __( 'Buy', 'discography' ) . '</th>
+						<th class="hear icon">' . __( 'Hear', 'discography' ) . '</th>
+						<th class="free icon">' . __( 'Free', 'discography' ) . '</th>
+						<th class="price icon">' . __( 'Price', 'discography' ) . '</th>
+						<th class="buy icon">' . __( 'Buy', 'discography' ) . '</th>
 					</tr>
 				</thead>
 				<tbody class="album">';
