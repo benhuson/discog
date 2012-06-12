@@ -37,6 +37,7 @@ class Discography {
 		add_action( 'init', array( $this, 'register_post_types' ) );
 		add_action( 'wp_loaded', array( $this, 'register_post_relationships' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts_and_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts_and_styles' ) );
 		add_filter( 'the_content', array( $this, 'overview_content' ) );
 		add_filter( 'the_content', array( $this, 'album_content' ) );
 		add_filter( 'the_content', array( $this, 'song_content' ) );
@@ -70,7 +71,11 @@ class Discography {
 	 */
 	function manage_discography_album_columns( $columns ) {
 		$new_columns = array();
+		unset( $columns['author'] );
 		foreach ( $columns as $key => $val ) {
+			if ( $key == 'date' ) {
+				$new_columns['author'] = __( 'Author', 'discography' );
+			}
 			$new_columns[$key] = $val;
 			if ( $key == 'title' ) {
 				$new_columns['discography_category'] = __( 'Categories', 'discography' );
@@ -121,11 +126,17 @@ class Discography {
 	 */
 	function manage_discography_song_columns( $columns ) {
 		$new_columns = array();
+		unset( $columns['author'] );
 		foreach ( $columns as $key => $val ) {
+			if ( $key == 'date' ) {
+				$new_columns['author'] = __( 'Author', 'discography' );
+			}
 			$new_columns[$key] = $val;
 			if ( $key == 'title' ) {
 				if ( function_exists( 'p2p_type' ) ) {
 					$new_columns['discography-album'] = __( 'Albums', 'discography' );
+					$new_columns['discography_download'] = __( 'Download', 'discography' );
+					$new_columns['discography_streaming'] = __( 'Streaming', 'discography' );
 				}
 			}
 		}
@@ -137,6 +148,8 @@ class Discography {
 	 */
 	function show_discography_song_columns( $name ) {
 		global $post;
+		$details = get_post_meta( $post->ID, '_discography_song_details', true );
+		$purchase = get_post_meta( $post->ID, '_discography_song_purchase', true );
 		switch ( $name ) {
 			case 'discography-album':
 				if ( function_exists( 'p2p_type' ) ) {
@@ -149,6 +162,14 @@ class Discography {
 						echo implode( ', ', $albums );
 					endif;
 				}
+				break;
+			case 'discography_download':
+				if ( $details['allow_download'] == 1 && ! empty( $purchase['purchase_download_link'] ) )
+					echo '<a href="' . $purchase['purchase_download_link'] . '">' . __( 'Yes', 'discography' ) . '</a>';
+				break;
+			case 'discography_streaming':
+				if ( $details['allow_streaming'] == 1 )
+					echo $this->player( $post );
 				break;
 		}
 	}
@@ -183,6 +204,19 @@ class Discography {
 		$discography_options = get_option( 'discography_options' );
 		// Only load styles, javascript and Delicious player if active and on an album/song page
 		if ( $this->is_discography_page() ) {
+			if ( $discography_options['delicious_player'] == 1 ) {
+				wp_enqueue_script( 'discography_playtagger', plugins_url( 'js/playtagger.js', __FILE__ ), array( 'jquery' ) );
+			}
+			wp_enqueue_style( 'discography_playtagger', plugins_url( 'css/discography.css', __FILE__ ) );
+		}
+	}
+	
+	/**
+	 * Admin Enqueue Scripts and Styles
+	 */
+	function admin_enqueue_scripts_and_styles( $hook ) {
+		if ( $hook == 'edit.php' && 'discography-song' == $_GET['post_type'] ) {
+			$discography_options = get_option( 'discography_options' );
 			if ( $discography_options['delicious_player'] == 1 ) {
 				wp_enqueue_script( 'discography_playtagger', plugins_url( 'js/playtagger.js', __FILE__ ), array( 'jquery' ) );
 			}
