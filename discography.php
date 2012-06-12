@@ -49,6 +49,10 @@ class Discography {
 		add_action( 'edited_discography_category', array( $this, 'attachment_fields_to_save' ), 10, 2 );
 		add_action( 'admin_menu', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
+		add_filter( 'manage_edit-discography-album_columns', array( $this, 'manage_discography_album_columns' ) );
+		add_action( 'manage_discography-album_posts_custom_column', array( $this, 'show_discography_album_columns' ) );
+		add_filter( 'manage_edit-discography-song_columns', array( $this, 'manage_discography_song_columns' ) );
+		add_action( 'manage_discography-song_posts_custom_column', array( $this, 'show_discography_song_columns' ) );
 		
 		// Shortcodes
 		require_once( DISCOGRAPHY_DIR . 'includes/shortcodes.php' );
@@ -58,6 +62,94 @@ class Discography {
 		if ( is_admin() ) {
 			require_once( DISCOGRAPHY_DIR . 'admin/admin.php' );
 			$this->admin = new Discography_Admin();
+		}
+	}
+	
+	/**
+	 * Add categories and song count to manage albums page
+	 */
+	function manage_discography_album_columns( $columns ) {
+		$new_columns = array();
+		foreach ( $columns as $key => $val ) {
+			$new_columns[$key] = $val;
+			if ( $key == 'title' ) {
+				$new_columns['discography_category'] = __( 'Categories', 'discography' );
+				if ( function_exists( 'p2p_type' ) ) {
+					$new_columns['discography-song'] = __( 'Songs', 'discography' );
+				}
+			}
+		}
+		return $new_columns;
+	}
+	
+	/**
+	 * Show categories and song count on manage albums page
+	 *
+	 * @todo Categories should link to edit screens.
+	 */
+	function show_discography_album_columns( $name ) {
+		global $post;
+		switch ( $name ) {
+			case 'discography_category':
+				$terms = get_the_terms( $post->ID, 'discography_category' );
+				if ( is_wp_error( $terms ) )
+					break;
+				if ( empty( $terms ) )
+					break;
+				
+				$links = array();
+				foreach ( $terms as $term ) {
+					$link = get_edit_term_link( $term, 'discography_category', $post->post_type );
+					if ( is_wp_error( $link ) )
+						continue;
+					$links[] = '<a href="' . esc_url( $link ) . '" rel="tag">' . $term->name . '</a>';
+				}
+				if ( count( $links ) > 0 ) {
+					echo implode( ', ', $links );
+				}
+				break;
+			case 'discography-song':
+				if ( function_exists( 'p2p_type' ) ) {
+					echo $this->count_album_songs( $post->ID );
+				}
+				break;
+		}
+	}
+	
+	/**
+	 * Add albums to manage songs page
+	 */
+	function manage_discography_song_columns( $columns ) {
+		$new_columns = array();
+		foreach ( $columns as $key => $val ) {
+			$new_columns[$key] = $val;
+			if ( $key == 'title' ) {
+				if ( function_exists( 'p2p_type' ) ) {
+					$new_columns['discography-album'] = __( 'Albums', 'discography' );
+				}
+			}
+		}
+		return $new_columns;
+	}
+	
+	/**
+	 * Show albums on manage songs page
+	 */
+	function show_discography_song_columns( $name ) {
+		global $post;
+		switch ( $name ) {
+			case 'discography-album':
+				if ( function_exists( 'p2p_type' ) ) {
+					$connected = p2p_type( 'discography_album' )->get_connected( $post );
+					if ( $connected->have_posts() ) :
+						$albums = array();
+						foreach ( $connected->posts as $connect ) {
+							$albums[] = '<a href="' . get_edit_post_link( $connect->ID ) . '">' . get_the_title( $connect->ID ) . '</a>';
+						}
+						echo implode( ', ', $albums );
+					endif;
+				}
+				break;
 		}
 	}
 	
@@ -630,6 +722,8 @@ class Discography {
 	
 	/**
 	 * Add Category Form
+	 *
+	 * @todo Check saving these values. Currently not working.
 	 *
 	 * @param string $taxonomy Taxonomy.
 	 */
