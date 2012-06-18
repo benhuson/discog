@@ -119,6 +119,9 @@ class Discography_Admin {
 	 * Outputs the options page.
 	 */
 	function options_page() {
+		global $wp_rewrite;
+		$wp_rewrite->flush_rules();
+		
 		echo '<div class="wrap">';
 		echo '<div id="icon-themes" class="icon32" style="background-image:url(' . DISCOGRAPHY_URL . 'images/icons/icon32.png);"><br /></div>';
 		echo '<h2>' . __( 'Discography Settings', 'discography' ) . '</h2>';
