@@ -402,7 +402,7 @@ class Discography {
 					$content .= '</td>
 							<td class="free icon">';
 					if ( $details['allow_download'] == 1 && ! empty( $purchase['free_download_link'] ) ) {
-						$content .= '<a onclick="javascript:urchinTracker(\'/free/song/' . $post->post_name . '\');" href="' . $purchase['free_download_link'] . '"><img src="' . plugins_url( 'images/emoticon_smile.png' , __FILE__ ) . '"></a>';
+						$content .= '<a onclick="javascript:urchinTracker(\'/free/song/' . $post->post_name . '\');" href="' . $purchase['free_download_link'] . '"><img src="' . plugins_url( 'images/download.png' , __FILE__ ) . '"></a>';
 					}
 					$content .= '</td>
 							<td class="price icon">';
@@ -478,7 +478,7 @@ class Discography {
 		if ( ! empty( $purchase['free_download_link'] ) ) {
 			$content .= '<tr>
 						<td colspan="2" class="buy-intro">' . __( 'Download the full album', 'discography' ) . '</td>
-						<td class="buy icon"><a onclick="javascript:urchinTracker(\'/free/group/' . $post->post_name . '\');" href="' . $purchase['free_download_link'] . '"><img src="' . plugins_url( 'images/emoticon_smile.png' , __FILE__ ) . '" title="' . __( 'Download', 'discography' ) . '" alt="' . __( 'Download', 'discography' ) . '"></a></td>
+						<td class="buy icon"><a onclick="javascript:urchinTracker(\'/free/group/' . $post->post_name . '\');" href="' . $purchase['free_download_link'] . '"><img src="' . plugins_url( 'images/download.png' , __FILE__ ) . '" title="' . __( 'Download', 'discography' ) . '" alt="' . __( 'Download', 'discography' ) . '"></a></td>
 						<td></td>
 						<td></td>
 					</tr>';
@@ -500,7 +500,7 @@ class Discography {
 					$content .= '</td>
 							<td class="free icon">';
 					if ( $details['allow_download'] == 1 && ! empty( $purchase['free_download_link'] ) ) {
-						$content .= '<a onclick="javascript:urchinTracker(\'/free/song/' . $connect->post_name . '\');" href="' . $purchase['free_download_link'] . '"><img src="' . plugins_url( 'images/emoticon_smile.png' , __FILE__ ) . '"></a>';
+						$content .= '<a onclick="javascript:urchinTracker(\'/free/song/' . $connect->post_name . '\');" href="' . $purchase['free_download_link'] . '"><img src="' . plugins_url( 'images/download.png' , __FILE__ ) . '"></a>';
 					}
 					$content .= '</td>
 							<td class="price icon">';
@@ -547,7 +547,7 @@ class Discography {
 		if ( ! empty( $purchase['purchase_download_link'] ) )
 			$headers[] = '<div class="buy action"><a onclick="javascript:urchinTracker(\'/buy/song/' . $post->post_name . '\');" href="' . $purchase['purchase_download_link'] . '"><span class="icon"><img alt="" src="' . plugins_url( '/images/cart_add.png', __FILE__ ) . '"></span> ' . __( 'Buy the song', 'discography' ) . '</a></div>';
 		if ( ! empty( $purchase['free_download_link'] ) )
-			$headers[] = '<div class="download action"><a onclick="javascript:urchinTracker(\'/free/song/' . $post->post_name . '\');" href="' . $purchase['free_download_link'] . '"><span class="icon"><img alt="" src="' . plugins_url( '/images/emoticon_smile.png', __FILE__ ) . '"></span> ' . __( 'Download the mp3', 'discography' ) . '</a></div>';
+			$headers[] = '<div class="download action"><a onclick="javascript:urchinTracker(\'/free/song/' . $post->post_name . '\');" href="' . $purchase['free_download_link'] . '"><span class="icon"><img alt="" src="' . plugins_url( '/images/download.png', __FILE__ ) . '"></span> ' . __( 'Download the mp3', 'discography' ) . '</a></div>';
 		if ( function_exists( 'p2p_type' ) ) {
 			$connected = p2p_type( 'discography_album' )->get_connected( $post );
 			if ( $connected->have_posts() ) :
