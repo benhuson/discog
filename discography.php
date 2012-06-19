@@ -43,6 +43,7 @@ class Discography {
 		add_filter( 'the_content', array( $this, 'song_content' ) );
 		add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
 		add_filter( 'http_request_args', array( $this, 'prevent_plugin_auto_update' ), 5, 2 );
+		add_filter( "get_post_metadata", array( $this, 'filter_get_post_meta' ), 11, 6 );
 		
 		// Admin
 		add_action( 'discography_category_add_form_fields', array( $this, 'attachment_fields_to_add' ), 10, 2 );
@@ -994,6 +995,42 @@ class Discography {
 				</select></td>
 			</tr>';
 		echo '</tbody></table>';
+	}
+	
+	/**
+	 * Filter Get Post Meta
+	 *
+	 * @param $value array Values.
+	 * @param $object_id int Post ID.
+	 * @param $meta_key string Meta key.
+	 * @param $single bool Return single value.
+	 * @return array Values.
+	 */
+	function filter_get_post_meta( $value, $object_id, $meta_key, $single ) {
+		if ( ! is_array( $value ) ) {
+			$value = array( array() );
+		}
+		if ( '_discography_song_details' == $meta_key ) {
+			foreach ( $value as $key => $val ) {
+				$value[$key] = wp_parse_args( $val, array(
+					'recording_artist' => '',
+					'recording_date'   => '',
+					'composer'         => '',
+					'track_length'     => '',
+					'allow_streaming'  => 0,
+					'allow_download'   => 0
+				) );
+			}
+		} elseif ( '_discography_song_purchase' == $meta_key ) {
+			foreach ( $value as $key => $val ) {
+				$value[$key] = wp_parse_args( $val, array(
+					'price'                  => '',
+					'purchase_download_link' => '',
+					'free_download_link'     => ''
+				) );
+			}
+		}
+		return $value;
 	}
 	
 	/**
