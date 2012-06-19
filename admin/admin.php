@@ -188,7 +188,7 @@ class Discography_Admin {
 	 */
 	function manage_posts_custom_column( $name ) {
 		global $Discography, $post;
-		$details = get_post_meta( $post->ID, '_discography_song_details', true );
+		$details = $Discography->get_discography_song_meta_details( $post->ID );
 		switch ( $name ) {
 			case 'discography_category':
 				$output = array();

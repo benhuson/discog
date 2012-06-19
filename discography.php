@@ -43,7 +43,6 @@ class Discography {
 		add_filter( 'the_content', array( $this, 'song_content' ) );
 		add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
 		add_filter( 'http_request_args', array( $this, 'prevent_plugin_auto_update' ), 5, 2 );
-		add_filter( "get_post_metadata", array( $this, 'filter_get_post_meta' ), 11, 6 );
 		
 		// Admin
 		add_action( 'discography_category_add_form_fields', array( $this, 'attachment_fields_to_add' ), 10, 2 );
@@ -149,8 +148,8 @@ class Discography {
 	 */
 	function show_discography_song_columns( $name ) {
 		global $post;
-		$details = get_post_meta( $post->ID, '_discography_song_details', true );
-		$purchase = get_post_meta( $post->ID, '_discography_song_purchase', true );
+		$details = $this->get_discography_song_meta_details( $post->ID );
+		$purchase = $this->get_discography_song_meta_purchase( $post->ID );
 		switch ( $name ) {
 			case 'discography-album':
 				if ( function_exists( 'p2p_type' ) ) {
@@ -269,8 +268,8 @@ class Discography {
 	function player( $post, $echo = false ) {
 		$output   = '';
 		$discography_options = get_option( 'discography_options' );
-		$details  = get_post_meta( $post->ID, '_discography_song_details', true );
-		$purchase = get_post_meta( $post->ID, '_discography_song_purchase', true );
+		$details  = $this->get_discography_song_meta_details( $post->ID );
+		$purchase = $this->get_discography_song_meta_purchase( $post->ID );
 		if ( $details['allow_streaming'] == 1 && ! empty( $purchase['free_download_link'] ) ) {
 			if ( $discography_options['delicious_player'] == 1 ) {
 				$output = '<a class="delicious" href="' . $purchase['free_download_link'] . '"></a>';
@@ -392,8 +391,8 @@ class Discography {
 						<tbody class="songs">';
 				while ( $songs_query->have_posts() ) { 
 					$songs_query->the_post();
-					$details  = get_post_meta( get_the_ID(), '_discography_song_details', true );
-					$purchase = get_post_meta( get_the_ID(), '_discography_song_purchase', true );
+					$details  = $this->get_discography_song_meta_details( get_the_ID() );
+					$purchase = $this->get_discography_song_meta_purchase( get_the_ID() );
 					$content .= '<tr class="song">
 							<td class="song-title"><a href="' . get_permalink() . '">' . get_the_title() . '</a></td>
 							<td class="hear icon">';
@@ -444,8 +443,8 @@ class Discography {
 			return $content;
 		}
 		
-		$details  = $this->get_album_details_meta( $post->ID );
-		$purchase = $this->get_album_purchase_meta( $post->ID );
+		$details  = $this->get_discography_album_meta_details( $post->ID );
+		$purchase = $this->get_discography_album_meta_purchase( $post->ID );
 		
 		if ( has_post_thumbnail() ) {
 			$content = '<div class="discography-album-art">' . get_the_post_thumbnail( $post->ID, 'thumbnail', array( 'alt' => esc_attr( $post->post_title ) ) ) . '</div>' . $content;
@@ -490,8 +489,8 @@ class Discography {
 				$content .= '</tbody>
 					<tbody class="songs">';
 				foreach ( $connected->posts as $connect ) {
-					$details  = get_post_meta( $connect->ID, '_discography_song_details', true );
-					$purchase = get_post_meta( $connect->ID, '_discography_song_purchase', true );
+					$details  = $this->get_discography_song_meta_details( $connect->ID );
+					$purchase = $this->get_discography_song_meta_purchase( $connect->ID );
 					$content .= '<tr class="song">
 							<td class="song-title"><a href="' . get_permalink( $connect->ID ) . '">' . get_the_title( $connect->ID ) . '</a></td>
 							<td class="hear icon">';
@@ -537,8 +536,8 @@ class Discography {
 			return $content;
 		}
 		
-		$details  = get_post_meta( $post->ID, '_discography_song_details', true );
-		$purchase = get_post_meta( $post->ID, '_discography_song_purchase', true );
+		$details  = $this->get_discography_song_meta_details( $post->ID );
+		$purchase = $this->get_discography_song_meta_purchase( $post->ID );
 		$lyrics   = get_post_meta( $post->ID, '_discography_song_lyrics', true );
 		
 		// Headers
@@ -885,7 +884,7 @@ class Discography {
 	 */
 	function album_details_meta_box_inner() {
 		global $post;
-		$details = $this->get_album_details_meta( $post->ID );
+		$details = $this->get_discography_album_meta_details( $post->ID );
 		
 		// Use nonce for verification
 		echo '<input type="hidden" name="album_details_noncename" id="album_details_noncename" value="' . wp_create_nonce( plugin_basename( __FILE__ ) ) . '" />';
@@ -922,7 +921,7 @@ class Discography {
 	 */
 	function album_purchase_meta_box_inner() {
 		global $post;
-		$details = $this->get_album_purchase_meta( $post->ID );
+		$details = $this->get_discography_album_meta_purchase( $post->ID );
 		
 		// Use nonce for verification
 		echo '<input type="hidden" name="album_purchase_noncename" id="album_purchase_noncename" value="' . wp_create_nonce( plugin_basename( __FILE__ ) ) . '" />';
@@ -957,7 +956,7 @@ class Discography {
 	 */
 	function song_details_meta_box_inner() {
 		global $post;
-		$details = get_post_meta( $post->ID, '_discography_song_details', true );
+		$details = $this->get_discography_song_meta_details( $post->ID );
 		
 		// Use nonce for verification
 		echo '<input type="hidden" name="song_details_noncename" id="song_details_noncename" value="' . wp_create_nonce( plugin_basename( __FILE__ ) ) . '" />';
@@ -998,47 +997,15 @@ class Discography {
 	}
 	
 	/**
-	 * Filter Get Post Meta
-	 *
-	 * @param $value array Values.
-	 * @param $object_id int Post ID.
-	 * @param $meta_key string Meta key.
-	 * @param $single bool Return single value.
-	 * @return array Values.
-	 */
-	function filter_get_post_meta( $value, $object_id, $meta_key, $single ) {
-		if ( ! is_array( $value ) ) {
-			$value = array( array() );
-		}
-		if ( '_discography_song_details' == $meta_key ) {
-			foreach ( $value as $key => $val ) {
-				$value[$key] = wp_parse_args( $val, array(
-					'recording_artist' => '',
-					'recording_date'   => '',
-					'composer'         => '',
-					'track_length'     => '',
-					'allow_streaming'  => 0,
-					'allow_download'   => 0
-				) );
-			}
-		} elseif ( '_discography_song_purchase' == $meta_key ) {
-			foreach ( $value as $key => $val ) {
-				$value[$key] = wp_parse_args( $val, array(
-					'price'                  => '',
-					'purchase_download_link' => '',
-					'free_download_link'     => ''
-				) );
-			}
-		}
-		return $value;
-	}
-	
-	/**
 	 * Song Purchase Meta Box
 	 */
 	function song_purchase_meta_box_inner() {
 		global $post;
-		$purchase = get_post_meta( $post->ID, '_discography_song_purchase', true );
+		$options = get_option( 'discography_options' );
+		$purchase = $this->get_discography_song_meta_purchase( $post->ID );
+		if ( empty( $purchase['price'] ) && $post->post_status == 'auto-draft' ) {
+			$purchase['price'] = $options['song_price'];
+		}
 		
 		// Use nonce for verification
 		echo '<input type="hidden" name="song_purchase_noncename" id="song_purchase_noncename" value="' . wp_create_nonce( plugin_basename( __FILE__ ) ) . '" />';
@@ -1083,6 +1050,76 @@ class Discography {
 	}
 	
 	/**
+	 * Get Song Meta Details
+	 *
+	 * @param $post_id int Post ID.
+	 * @return array Meta value.
+	 */
+	function get_discography_song_meta_details( $post_id ) {
+		$meta = get_post_meta( $post_id, '_discography_song_details', true );
+		$meta = wp_parse_args( $meta, array(
+			'recording_artist' => '',
+			'recording_date'   => '',
+			'composer'         => '',
+			'track_length'     => '',
+			'allow_streaming'  => 0,
+			'allow_download'   => 0
+		) );
+		return $meta;
+	}
+	
+	/**
+	 * Get Song Meta Purchase
+	 *
+	 * @param $post_id int Post ID.
+	 * @return array Meta value.
+	 */
+	function get_discography_song_meta_purchase( $post_id ) {
+		$meta = get_post_meta( $post_id, '_discography_song_purchase', true );
+		$meta = wp_parse_args( $meta, array(
+			'price'                  => '',
+			'purchase_download_link' => '',
+			'free_download_link'     => ''
+		) );
+		return $meta;
+	}
+	
+	/**
+	 * Get Album Meta Details
+	 *
+	 * @param $post_id int Post ID.
+	 * @return array Meta value.
+	 */
+	function get_discography_album_meta_details( $post_id ) {
+		$meta = get_post_meta( $post_id, '_discography_album_details', true );
+		$meta = wp_parse_args( $meta, array(
+			'artist'        => '',
+			'is_album'      => 0,
+			'show_on_pages' => 0,
+			'release_date'  => ''
+		) );
+		return $meta;
+	}
+	
+	/**
+	 * Get Album Meta Purchase
+	 *
+	 * @param $post_id int Post ID.
+	 * @return array Meta value.
+	 */
+	function get_discography_album_meta_purchase( $post_id ) {
+		$meta = get_post_meta( $post_id, '_discography_album_purchase', true );
+		$meta = wp_parse_args( $meta, array(
+			'price'                  => '',
+			'purchase_link'          => '',
+			'download_price'         => '',
+			'purchase_download_link' => '',
+			'free_download_link'     => ''
+		) );
+		return $meta;
+	}
+	
+	/**
 	 * Filter Discography Song/Album Meta Data
 	 *
 	 * @param int $object_id Album ID.
@@ -1124,14 +1161,14 @@ class Discography {
 			// Save Album Details
 			if ( wp_verify_nonce( $_POST['album_details_noncename'], plugin_basename( __FILE__ ) ) ) {
 				if ( isset( $_POST['discography_album_details'] ) ) {
-					$details = wp_parse_args( $_POST['discography_album_details'], $Discography->get_album_details_meta( $post_id ) );
+					$details = wp_parse_args( $_POST['discography_album_details'], $Discography->get_discography_album_meta_details( $post_id ) );
 					update_post_meta( $post_id, '_discography_album_details', $details );
 				}
 			}
 			// Save Album Purchase Details
 			if ( wp_verify_nonce( $_POST['album_purchase_noncename'], plugin_basename( __FILE__ ) ) ) {
 				if ( isset( $_POST['discography_album_purchase'] ) ) {
-					$purchase = wp_parse_args( $_POST['discography_album_purchase'], $Discography->get_album_purchase_meta( $post_id ) );
+					$purchase = wp_parse_args( $_POST['discography_album_purchase'], $Discography->get_discography_album_meta_purchase( $post_id ) );
 					update_post_meta( $post_id, '_discography_album_purchase', $purchase );
 				}
 			}
@@ -1139,14 +1176,14 @@ class Discography {
 			// Save Song Details
 			if ( wp_verify_nonce( $_POST['song_details_noncename'], plugin_basename( __FILE__ ) ) ) {
 				if ( isset( $_POST['discography_song_details'] ) ) {
-					$details = wp_parse_args( $_POST['discography_song_details'], $Discography->get_song_details_meta( $post_id ) );
+					$details = wp_parse_args( $_POST['discography_song_details'], $this->get_discography_song_meta_details( $post_id ) );
 					update_post_meta( $post_id, '_discography_song_details', $details );
 				}
 			}
 			// Save Song Purchase Details
 			if ( wp_verify_nonce( $_POST['song_purchase_noncename'], plugin_basename( __FILE__ ) ) ) {
 				if ( isset( $_POST['discography_song_purchase'] ) ) {
-					$purchase = wp_parse_args( $_POST['discography_song_purchase'], $Discography->get_song_purchase_meta( $post_id ) );
+					$purchase = wp_parse_args( $_POST['discography_song_purchase'], $this->get_discography_song_meta_purchase( $post_id ) );
 					update_post_meta( $post_id, '_discography_song_purchase', $purchase );
 				}
 			}
@@ -1182,72 +1219,6 @@ class Discography {
 			$meta = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table WHERE meta_key = %s", $meta_key ) );
 		}
 		return $meta;
-	}
-	
-	/**
-	 * Get Album Details Meta
-	 *
-	 * @param int $post_id Post ID.
-	 * @return array Album Details Meta.
-	 */
-	function get_album_details_meta( $post_id ) {
-		$details = wp_parse_args( get_post_meta( $post_id, '_discography_album_details', true ), array(
-			'artist'        => '',
-			'is_album'      => 0,
-			'show_on_pages' => 0,
-			'release_date'  => ''
-		) );
-		return $details;
-	}
-	
-	/**
-	 * Get Album Purchase Meta
-	 *
-	 * @param int $post_id Post ID.
-	 * @return array Album Purchase Meta.
-	 */
-	function get_album_purchase_meta( $post_id ) {
-		$purchase = wp_parse_args( get_post_meta( $post_id, '_discography_album_purchase', true ), array(
-			'price'                  => '',
-			'purchase_link'          => '',
-			'download_price'         => '',
-			'purchase_download_link' => '',
-			'free_download_link'     => ''
-		) );
-		return $purchase;
-	}
-	
-	/**
-	 * Get Song Details Meta
-	 *
-	 * @param int $post_id Post ID.
-	 * @return array Song Details Meta.
-	 */
-	function get_song_details_meta( $post_id ) {
-		$details = wp_parse_args( get_post_meta( $post_id, '_discography_song_details', true ), array(
-			'recording_artist' => '',
-			'recording_date'   => '',
-			'allow_streaming'  => 0,
-			'allow_download'   => 0
-		) );
-		return $details;
-	}
-	
-	/**
-	 * Get Song Purchase Meta
-	 *
-	 * @param int $post_id Post ID.
-	 * @return array Song Purchase Meta.
-	 */
-	function get_song_purchase_meta( $post_id ) {
-		$purchase = wp_parse_args( get_post_meta( $post_id, '_discography_song_purchase', true ), array(
-			'price'                  => '',
-			'composer'               => '',
-			'track_length'           => '',
-			'purchase_download_link' => '',
-			'free_download_link'     => ''
-		) );
-		return $purchase;
 	}
 	
 	/**
