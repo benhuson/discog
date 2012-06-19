@@ -908,7 +908,11 @@ class Discography {
 	 */
 	function album_details_meta_box_inner() {
 		global $post;
+		$options = get_option( 'discography_options' );
 		$details = $this->get_discography_album_meta_details( $post->ID );
+		if ( empty( $details['artist'] ) && $post->post_status == 'auto-draft' ) {
+			$details['artist'] = $options['artist'];
+		}
 		
 		// Use nonce for verification
 		echo '<input type="hidden" name="album_details_noncename" id="album_details_noncename" value="' . wp_create_nonce( plugin_basename( __FILE__ ) ) . '" />';
@@ -945,7 +949,14 @@ class Discography {
 	 */
 	function album_purchase_meta_box_inner() {
 		global $post;
+		$options = get_option( 'discography_options' );
 		$details = $this->get_discography_album_meta_purchase( $post->ID );
+		if ( empty( $details['price'] ) && $post->post_status == 'auto-draft' ) {
+			$details['price'] = $options['group_price'];
+		}
+		if ( empty( $details['download_price'] ) && $post->post_status == 'auto-draft' ) {
+			$details['download_price'] = $options['group_price'];
+		}
 		
 		// Use nonce for verification
 		echo '<input type="hidden" name="album_purchase_noncename" id="album_purchase_noncename" value="' . wp_create_nonce( plugin_basename( __FILE__ ) ) . '" />';
