@@ -1042,13 +1042,6 @@ class Discography {
 		echo '<textarea rows="15" cols="40" name="discography_song_lyrics" tabindex="6" id="discography_song_lyrics" style="margin: 0px; width: 98%;">' . $lyrics . '</textarea>';
 	}
 	
-	function walk_nav_menu_tree( $items, $depth, $r ) {
-		$walker = ( empty($r->walker) ) ? new Walker_Nav_Menu : $r->walker;
-		$args = array( $items, $depth, $r );
-		
-		return call_user_func_array( array(&$walker, 'walk'), $args );
-	}
-	
 	/**
 	 * Get Song Meta Details
 	 *
