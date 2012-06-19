@@ -43,6 +43,7 @@ class Discography {
 		add_filter( 'the_content', array( $this, 'song_content' ) );
 		add_filter( 'post_class', array( $this, 'post_class' ), 10, 3 );
 		add_filter( 'http_request_args', array( $this, 'prevent_plugin_auto_update' ), 5, 2 );
+		add_filter( 'discography_song_post_type_args', array( $this, 'discography_song_post_type_args' ), 5 );
 		
 		// Admin
 		add_action( 'discography_category_add_form_fields', array( $this, 'attachment_fields_to_add' ), 10, 2 );
@@ -673,8 +674,9 @@ class Discography {
 			'menu_icon'          => plugins_url( 'images/icons/icon16.png', __FILE__ ),
 			'hierarchical'       => false,
 			'menu_position'      => null,
-			'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )
-		); 
+			'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt' )
+		);
+		$args = apply_filters( 'discography_album_post_type_args', $args );
 		register_post_type( 'discography-album', $args );
 		
 		// Songs
@@ -709,9 +711,31 @@ class Discography {
 			),
 			'hierarchical'       => false,
 			'menu_position'      => null,
-			'supports'           => array( 'title', 'editor', 'author', 'excerpt', 'comments' )
-		); 
+			'supports'           => array( 'title', 'editor', 'author', 'excerpt' )
+		);
+		$args = apply_filters( 'discography_song_post_type_args', $args );
 		register_post_type( 'discography-song', $args );
+	}
+	
+	/**
+	 * Discography Song Post Type Args
+	 *
+	 * @param $args array Post type args.
+	 * @return array Post type args.
+	 */
+	function discography_song_post_type_args( $args ) {
+		$options = $this->get_discography_options();
+		if ( ! isset( $args['supports'] ) || ! is_array( $args['supports'] ) ) {
+			$args['supports'] = array( 'title', 'editor' );
+		}
+		if ( 'open' == $options['song_open_comments'] ) {
+			$args['supports'][] = 'comments';
+		}
+		if ( 'open' == $options['song_open_pingbacks'] ) {
+			$args['supports'][] = 'trackbacks';
+		}
+		$args['supports'] = array_unique( $args['supports'] );
+		return $args;
 	}
 	
 	/**
