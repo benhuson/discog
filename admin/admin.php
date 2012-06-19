@@ -98,10 +98,10 @@ class Discography_Admin {
 	 * @param string $hook Page hook name.
 	 */
 	function admin_enqueue_discography_scripts( $hook ) {
-		if ( 'post.php' != $hook )
-			return;
-		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_enqueue_style( 'discography_playtagger', DISCOGRAPHY_URL . 'css/jquery-ui/jquery-ui-1.8.20.custom.css' );
+		if ( in_array( $hook, array( 'post.php', 'post-new.php' ) ) && in_array( get_post_type(), array( 'discography-album', 'discography-song' ) ) ) {
+			wp_enqueue_script( 'jquery-ui-datepicker' );
+			wp_enqueue_style( 'discography_playtagger', DISCOGRAPHY_URL . 'css/jquery-ui/jquery-ui-1.8.20.custom.css' );
+		}
 	}
 	
 	/**
