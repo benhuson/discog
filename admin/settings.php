@@ -175,7 +175,7 @@ class Discography_Settings {
 				<option value="release_date" ' . selected( 'release_date', $options['group_sort_by'], false ) . '>' . __( 'Release Date', 'discography' ) . '</option>
 				<option value="order" ' . selected( 'order', $options['group_sort_by'], false ) . '>' . __( 'Custom', 'discography' ) . '</option>
 				<option value="title" ' . selected( 'title', $options['group_sort_by'], false ) . '>' . __( 'Alphabetical', 'discography' ) . '</option>
-				<option value="id" ' . selected( 'id', $options['group_sort_by'], false ) . '>' . __( 'Category ID', 'discography' ) . '</option>
+				<option value="id" ' . selected( 'id', $options['group_sort_by'], false ) . '>' . __( 'Album ID', 'discography' ) . '</option>
 			</select>';
 	}
 	
