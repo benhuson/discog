@@ -2,7 +2,9 @@
 
 class Discography_Admin {
 	
+	var $options_page;
 	var $settings;
+	var $help;
 	
 	/**
 	 * Constructor
@@ -60,8 +62,8 @@ class Discography_Admin {
 			register_setting( 'discography-options', 'wp_geo_options', '' );
 		}
 		
-		// Show Settings Link
 		$this->settings = new Discography_Settings();
+		$this->help = new Discography_Help();
 	}
 	
 	/**
@@ -90,6 +92,7 @@ class Discography_Admin {
 	 */
 	function include_admin_files() {
 		include_once( DISCOGRAPHY_DIR . 'admin/settings.php' );
+		include_once( DISCOGRAPHY_DIR . 'admin/help.php' );
 	}
 	
 	/**
@@ -110,7 +113,7 @@ class Discography_Admin {
 	 */
 	function add_discography_options_page() {
 		if ( function_exists( 'add_options_page' ) ) {
-			add_options_page( __( 'Discography', 'discography' ), __( 'Discography', 'discography' ), 'manage_options', DISCOGRAPHY_FILE, array( $this, 'options_page' ) );
+			$this->options_page = add_options_page( __( 'Discography', 'discography' ), __( 'Discography', 'discography' ), 'manage_options', DISCOGRAPHY_FILE, array( $this, 'options_page' ) );
 		}
 	}
 	

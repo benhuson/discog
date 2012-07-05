@@ -22,7 +22,7 @@ class Discography_Settings {
 		add_settings_section( 'categories', __( 'Categories', 'discography' ), array( $this, 'section_categories' ), 'discography' );
 		
 		// Fields
-		add_settings_field( 'discography_options_page', __( 'Select a page to house your discography', 'discography' ), array( $this, 'page_field' ), 'discography', 'general' );
+		add_settings_field( 'discography_options_page', __( 'Select a page for your discography', 'discography' ), array( $this, 'page_field' ), 'discography', 'general' );
 		add_settings_field( 'discography_options_song_price', __( 'Default Song Price', 'discography' ), array( $this, 'song_price_field' ), 'discography', 'songs' );
 		add_settings_field( 'discography_options_song_open_comments', __( 'Allow comments on songs', 'discography' ), array( $this, 'song_open_comments_field' ), 'discography', 'songs' );
 		add_settings_field( 'discography_options_song_open_pingbacks', __( 'Allow "pingbacks" on songs', 'discography' ), array( $this, 'song_open_pingbacks_field' ), 'discography', 'songs' );
