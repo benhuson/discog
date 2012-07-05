@@ -408,7 +408,7 @@ class Discography {
 					$content .= '</td>
 							<td class="price icon">';
 					if ( ! empty( $purchase['price'] ) && $purchase['price'] != 0 ) {
-						$content .= '$' . $this->floor_price( $purchase['price'] );
+						$content .= $discography_options['currency_symbol'] . $this->floor_price( $purchase['price'] );
 					}
 					$content .= '</td>
 							<td class="buy icon">';
@@ -439,6 +439,7 @@ class Discography {
 	 */
 	function album_content( $content ) {
 		global $post;
+		$discography_options = get_option( 'discography_options' );
 		
 		if ( ! is_single() || 'discography-album' != get_post_type() ) {
 			return $content;
@@ -465,14 +466,14 @@ class Discography {
 		if ( ! empty( $purchase['purchase_link'] ) && ! empty( $purchase['price'] ) && $purchase['price'] != 0 ) {
 			$content .= '<tr class="buy-info">
 						<td colspan="3" class="buy-intro">' . __( 'Buy the CD (physical media)', 'discography' ) . '</td>
-						<td class="price icon">$' . $this->floor_price( $purchase['price'] ) . '</td>
+						<td class="price icon">' . $discography_options['currency_symbol'] . $this->floor_price( $purchase['price'] ) . '</td>
 						<td class="buy icon"><a onclick="javascript:urchinTracker(\'/buy/group-physical/' . $post->post_name . '\');" href="' . $purchase['purchase_link'] . '"><img src="' . plugins_url( 'images/cart_add.png' , __FILE__ ) . '" title="' . __( 'Buy', 'discography' ) . '" alt="' . __( 'Buy', 'discography' ) . '"></a></td>
 					</tr>';
 		}
 		if ( ! empty( $purchase['purchase_download_link'] ) && ! empty( $purchase['download_price'] ) && $purchase['download_price'] != 0 ) {
 			$content .= '<tr>
 						<td colspan="3" class="buy-intro">' . __( 'Buy the whole album (download)', 'discography' ) . '</td>
-						<td class="price icon">$' . $this->floor_price( $purchase['download_price'] ) . '</td>
+						<td class="price icon">' . $discography_options['currency_symbol'] . $this->floor_price( $purchase['download_price'] ) . '</td>
 						<td class="buy icon"><a onclick="javascript:urchinTracker(\'/buy/group-download/' . $post->post_name . '\');" href="' . $purchase['purchase_download_link'] . '"><img src="' . plugins_url( 'images/cart_add.png' , __FILE__ ) . '" title="' . __( 'Buy', 'discography' ) . '" alt="' . __( 'Buy', 'discography' ) . '"></a></td>
 					</tr>';
 		}
@@ -506,7 +507,7 @@ class Discography {
 					$content .= '</td>
 							<td class="price icon">';
 					if ( ! empty( $purchase['price'] ) && $purchase['price'] != 0 ) {
-						$content .= '$' . $this->floor_price( $purchase['price'] );
+						$content .= $discography_options['currency_symbol'] . $this->floor_price( $purchase['price'] );
 					}
 					$content .= '</td>
 							<td class="buy icon">';
@@ -532,6 +533,7 @@ class Discography {
 	 */
 	function song_content( $content ) {
 		global $post;
+		$discography_options = get_option( 'discography_options' );
 		
 		if ( ! is_single() || 'discography-song' != get_post_type() ) {
 			return $content;
@@ -545,8 +547,10 @@ class Discography {
 		$headers = array();
 		if ( ! empty( $details['allow_streaming'] ) )
 			$headers[] = '<div class="hear action"><span class="icon">' . $this->player( $post ) . '</span> ' . __( 'Listen to the song', 'discography' ) . '</div>';
-		if ( ! empty( $purchase['purchase_download_link'] ) )
-			$headers[] = '<div class="buy action"><a onclick="javascript:urchinTracker(\'/buy/song/' . $post->post_name . '\');" href="' . $purchase['purchase_download_link'] . '"><span class="icon"><img alt="" src="' . plugins_url( '/images/cart_add.png', __FILE__ ) . '"></span> ' . __( 'Buy the song', 'discography' ) . '</a></div>';
+		if ( ! empty( $purchase['purchase_download_link'] ) ) {
+			$price = ! empty( $purchase['price'] ) ? ' <span class="price">(' . $discography_options['currency_symbol'] . $this->floor_price( $purchase['price'] ) . ')</span>' : '';
+			$headers[] = '<div class="buy action"><a onclick="javascript:urchinTracker(\'/buy/song/' . $post->post_name . '\');" href="' . $purchase['purchase_download_link'] . '"><span class="icon"><img alt="" src="' . plugins_url( '/images/cart_add.png', __FILE__ ) . '"></span> ' . __( 'Buy the song', 'discography' ) . '</a>' . $price . '</div>';
+		}
 		if ( ! empty( $purchase['free_download_link'] ) )
 			$headers[] = '<div class="download action"><a onclick="javascript:urchinTracker(\'/free/song/' . $post->post_name . '\');" href="' . $purchase['free_download_link'] . '"><span class="icon"><img alt="" src="' . plugins_url( '/images/download.png', __FILE__ ) . '"></span> ' . __( 'Download the mp3', 'discography' ) . '</a></div>';
 		if ( function_exists( 'p2p_type' ) ) {
@@ -950,6 +954,7 @@ class Discography {
 	function album_purchase_meta_box_inner() {
 		global $post;
 		$options = get_option( 'discography_options' );
+		$currency_symbol = ! empty( $options['currency_symbol'] ) ? $options['currency_symbol'] . ' ' : '';
 		$details = $this->get_discography_album_meta_purchase( $post->ID );
 		if ( empty( $details['price'] ) && $post->post_status == 'auto-draft' ) {
 			$details['price'] = $options['group_price'];
@@ -965,7 +970,7 @@ class Discography {
 		echo '<table class="form-table" style="width: 100%;" cellspacing="2" cellpadding="5"><tbody>';
 		echo '<tr class="form-field">
 				<th valign="top" scope="row"><label for="discography_album_purchase_price">' . __( 'Physical Copy Price', 'discography' ) . '</label></th>
-				<td><input type="text" name="discography_album_purchase[price]" id="discography_album_purchase_price" size="10" value="' . $details['price'] . '" style="width: 25%"></td>
+				<td>' . $currency_symbol . '<input type="text" name="discography_album_purchase[price]" id="discography_album_purchase_price" size="10" value="' . $details['price'] . '" style="width: 25%"></td>
 			</tr>
 			<tr class="form-field">
 				<th valign="top" scope="row"><label for="discography_album_purchase_purchase_link">' . __( 'Purchase (physical copy) Link', 'discography' ) . '</label></th>
@@ -973,7 +978,7 @@ class Discography {
 			</tr>
 			<tr class="form-field">
 				<th valign="top" scope="row"><label for="discography_album_purchase_download_price">' . __( 'Download Price', 'discography' ) . '</label></th>
-				<td><input type="text" name="discography_album_purchase[download_price]" id="discography_album_purchase_download_price" size="10" value="' . $details['download_price'] . '" style="width: 25%"></td>
+				<td>' . $currency_symbol . '<input type="text" name="discography_album_purchase[download_price]" id="discography_album_purchase_download_price" size="10" value="' . $details['download_price'] . '" style="width: 25%"></td>
 			</tr>
 			<tr class="form-field">
 				<th valign="top" scope="row"><label for="discography_album_purchase_purchase_download_link">' . __( 'Purchase (physical copy) Link', 'discography' ) . '</label></th>
@@ -1037,6 +1042,7 @@ class Discography {
 	function song_purchase_meta_box_inner() {
 		global $post;
 		$options = get_option( 'discography_options' );
+		$currency_symbol = ! empty( $options['currency_symbol'] ) ? $options['currency_symbol'] . ' ' : '';
 		$purchase = $this->get_discography_song_meta_purchase( $post->ID );
 		if ( empty( $purchase['price'] ) && $post->post_status == 'auto-draft' ) {
 			$purchase['price'] = $options['song_price'];
@@ -1049,7 +1055,7 @@ class Discography {
 		echo '<table class="form-table" style="width: 100%;" cellspacing="2" cellpadding="5"><tbody>';
 		echo '<tr class="form-field">
 				<th valign="top" scope="row"><label for="discography_song_purchase_price">' . __( 'Price', 'discography' ) . '</label></th>
-				<td><input type="text" name="discography_song_purchase[price]" id="discography_song_purchase_price" size="10" value="' . $purchase['price'] . '" style="width: 25%"></td>
+				<td>' . $currency_symbol . '<input type="text" name="discography_song_purchase[price]" id="discography_song_purchase_price" size="10" value="' . $purchase['price'] . '" style="width: 25%"></td>
 			</tr>
 			<tr class="form-field">
 				<th valign="top" scope="row"><label for="discography_song_purchase_purchase_download_link">' . __( 'Purchase Download Link', 'discography' ) . '</label></th>
@@ -1255,6 +1261,7 @@ class Discography {
 	function get_discography_options() {
 		$options = wp_parse_args( get_option( 'discography_options' ), array(
 			'page'                => 0,
+			'currency_symbol'     => '$',
 			'song_price'          => '',
 			'song_open_comments'  => 'closed',
 			'song_open_pingbacks' => 'closed',

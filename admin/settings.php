@@ -23,6 +23,7 @@ class Discography_Settings {
 		
 		// Fields
 		add_settings_field( 'discography_options_page', __( 'Select a page for your discography', 'discography' ), array( $this, 'page_field' ), 'discography', 'general' );
+		add_settings_field( 'discography_options_currency_symbol', __( 'Currency Symbol', 'discography' ), array( $this, 'currency_symbol_field' ), 'discography', 'general' );
 		add_settings_field( 'discography_options_song_price', __( 'Default Song Price', 'discography' ), array( $this, 'song_price_field' ), 'discography', 'songs' );
 		add_settings_field( 'discography_options_song_open_comments', __( 'Allow comments on songs', 'discography' ), array( $this, 'song_open_comments_field' ), 'discography', 'songs' );
 		add_settings_field( 'discography_options_song_open_pingbacks', __( 'Allow "pingbacks" on songs', 'discography' ), array( $this, 'song_open_pingbacks_field' ), 'discography', 'songs' );
@@ -89,6 +90,15 @@ class Discography_Settings {
 			'id'               => 'discography_options_page',
 			'selected'         => $options['page']
 		) );
+	}
+	
+	/**
+	 * Currency Symbol Field
+	 */
+	function currency_symbol_field() {
+		global $Discography;
+		$options = $Discography->get_discography_options();
+		echo '<input type="text" name="discography_options[currency_symbol]" id="discography_options_currency_symbol" size="3" value="' . $options['currency_symbol'] . '" autocomplete="off">';
 	}
 	
 	/**
