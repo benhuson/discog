@@ -649,7 +649,7 @@ class Discography {
 		$labels = array(
 			'name'               => _x( 'Albums', 'general name', 'discography' ),
 			'singular_name'      => _x( 'Album', 'singular name', 'discography' ),
-			'add_new'            => _x( 'Add New', 'album', 'discography' ),
+			'add_new'            => _x( 'Add New Album', 'album', 'discography' ),
 			'add_new_item'       => __( 'Add New Album', 'discography' ),
 			'edit_item'          => __( 'Edit Album', 'discography' ),
 			'new_item'           => __( 'New Album', 'discography' ),
