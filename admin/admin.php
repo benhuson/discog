@@ -115,7 +115,7 @@ class Discography_Admin {
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 			wp_enqueue_style( 'discography_playtagger', DISCOGRAPHY_URL . 'css/jquery-ui/jquery-ui-1.8.20.custom.css' );
 		}
-		if ( $hook == 'edit.php' && 'discography-song' == $_GET['post_type'] ) {
+		if ( $hook == 'edit.php' && isset( $_GET['post_type'] ) && 'discography-song' == $_GET['post_type'] ) {
 			$discography_options = get_option( 'discography_options' );
 			if ( $discography_options['delicious_player'] == 1 ) {
 				wp_enqueue_script( 'discography_playtagger', DISCOGRAPHY_URL . '/js/playtagger.js', array( 'jquery' ) );
