@@ -208,7 +208,7 @@ class Discography_Admin {
 				<td>' . $currency_symbol . '<input type="text" name="discography_album_purchase[price]" id="discography_album_purchase_price" size="10" value="' . $details['price'] . '" style="width: 25%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_purchase_purchase_link">' . __( 'Purchase (physical copy) Link', 'discography' ) . '</label></th>
+				<th valign="top" scope="row"><label for="discography_album_purchase_purchase_link">' . __( 'Purchase Physical Copy Link', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_album_purchase[purchase_link]" id="discography_album_purchase_purchase_link" size="50" value="' . $details['purchase_link'] . '" style="width: 95%"></td>
 			</tr>
 			<tr class="form-field">
@@ -216,7 +216,7 @@ class Discography_Admin {
 				<td>' . $currency_symbol . '<input type="text" name="discography_album_purchase[download_price]" id="discography_album_purchase_download_price" size="10" value="' . $details['download_price'] . '" style="width: 25%"></td>
 			</tr>
 			<tr class="form-field">
-				<th valign="top" scope="row"><label for="discography_album_purchase_purchase_download_link">' . __( 'Purchase (physical copy) Link', 'discography' ) . '</label></th>
+				<th valign="top" scope="row"><label for="discography_album_purchase_purchase_download_link">' . __( 'Purchase Download Link', 'discography' ) . '</label></th>
 				<td><input type="text" name="discography_album_purchase[purchase_download_link]" id="discography_album_purchase_purchase_download_link" size="50" value="' . $details['purchase_download_link'] . '" style="width: 95%"></td>
 			</tr>
 			<tr class="form-field">
